@@ -1,9 +1,9 @@
 import feedparser
+import shutil
 
 from argparse import ArgumentParser
 from subprocess import call
 from datetime import date, timedelta
-from shutil import copy
 from os import path, listdir
 from jinja2 import Environment, PackageLoader
 
@@ -87,7 +87,7 @@ def build(feed_urls, output_dir, max_old=None):
 
     # Copy the assets
     for name in listdir(path.join(ROOT, 'assets')):
-        copy(path.join(ROOT, 'assets', name), path.join(output_dir, name))
+        shutil.copy(path.join(ROOT, 'assets', name), path.join(output_dir, name))
     # copytree(path.join(ROOT, 'assets'), output_dir)
 
 
@@ -107,8 +107,6 @@ def mobi(input_file, exec_path):
     call([exec_path, input_file])
 
 if __name__ == "__main__":
-    import sys
-
     parser = ArgumentParser()
     parser.add_argument("-a", "--age", dest="age", default=None,
                       help="Max age of posts to be used", metavar="INT")
