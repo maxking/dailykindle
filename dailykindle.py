@@ -117,6 +117,8 @@ python dailykindle.py <output dir> <day|week> <kindle_gen> <feed_url_1> [<feed_u
         length = timedelta(1)
     elif argv[2] == 'week':
         length = timedelta(7)
+    elif argv[2] == 'all':
+        length = None
 
     print("Running DailyKindle...")
     print("-> Generating files...")
