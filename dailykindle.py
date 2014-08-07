@@ -1,14 +1,17 @@
+import feedparser
+
+from argparse import ArgumentParser
+from subprocess import call
 from datetime import date, timedelta
 from shutil import copy
-from os import path, listdir, system
-import feedparser
+from os import path, listdir
 from jinja2 import Environment, PackageLoader
 
 templates_env = Environment(loader=PackageLoader('dailykindle', 'templates'))
 ROOT = path.dirname(path.abspath(__file__))
 
 
-def build(feeds_urls, output_dir, max_old=None):
+def build(feed_urls, output_dir, max_old=None):
     """
     Given a list of feeds URLs and the path of a directory, writes the necessary
     for building a MOBI document.
@@ -22,7 +25,7 @@ def build(feeds_urls, output_dir, max_old=None):
         max_old = timedelta.max
 
     # Give the feeds URLs to Feedparser to have nicely usable feed objects.
-    feeds = [feedparser.parse(feed_url) for feed_url in feeds_urls]
+    feeds = [feedparser.parse(feed_url) for feed_url in feed_urls]
 
     # Parse the feeds and grave useful information to build a structure
     # which will be passed to the templates.
@@ -99,30 +102,35 @@ def render_and_write(template_name, context, output_name, output_dir):
 
 def mobi(input_file, exec_path):
     """Execute the KindleGen binary to create a MOBI file."""
-    system("%s %s" % (exec_path, input_file))
+    if exec_path is None:
+        exec_path = "kindlegen"
+    call([exec_path, input_file])
 
 if __name__ == "__main__":
-    from sys import argv, exit
+    import sys
 
-    def usage():
-        print("""DailyKindle usage:
-python dailykindle.py <output dir> <day|week|all> <kindle_gen> <feed_url_1> [<feed_url_2> ...]""")
+    parser = ArgumentParser()
+    parser.add_argument("-a", "--age", dest="age", default=None,
+                      help="Max age of posts to be used", metavar="INT")
+    parser.add_argument("-k", "--kindlegen", dest="exec_path", default=None,
+                      help="Path to the kindlegen binary if not on sys path")
+    parser.add_argument("-o", "--output_dir", dest="output_dir", default="/tmp",
+                        help="Output path for created ebook and other files")
+    parser.add_argument("feed", nargs="*", help="One or more feed urls")
 
-    if not len(argv) > 3:
-        usage()
-        exit(64)
+    try:
+        args = parser.parse_args()
+    except:
+        raise
 
-    length = None
-    if argv[2] == 'day':
-        length = timedelta(1)
-    elif argv[2] == 'week':
-        length = timedelta(7)
-    elif argv[2] == 'all':
+    if args.age is None:
         length = None
+    else:
+        length = timedelta(int(args.age))
 
     print("Running DailyKindle...")
     print("-> Generating files...")
-    build(argv[4:], argv[1], length)
+    build(args.feed, args.output_dir, length)
     print("-> Build the MOBI file using KindleGen...")
-    mobi(path.join(argv[1], 'daily.opf'), argv[3])
-    print("Done")
+    mobi(path.join(args.output_dir, 'daily.opf'), args.exec_path)
+    print("Done.")

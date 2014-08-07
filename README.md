@@ -25,27 +25,29 @@ Want to see what it looks like? Take a look at `examples/mobi_doc/`!
 
 ## Usage
 
-    DailyKindle usage:
-    python dailykindle.py <output dir> <day|week|all> <kindle_gen> <feed_url_1>
-    [<feed_url_2> ...]
+```
+usage: dailykindle.py [-h] [-a INT] [-k EXEC_PATH] [-o OUTPUT_DIR]
+                      [feed [feed ...]]
 
-Passing `day` will only keep posts younger than one day; `week` for one week;
-and `all` will keep all the posts.
+positional arguments:
+  feed                  One or more feed urls
 
-This will create a `daily.mobi` in `<output dir>`. You can now transfer this
-file to your device.
+optional arguments:
+  -h, --help            show this help message and exit
+  -a INT, --age INT     Max age of posts to be used
+  -k EXEC_PATH, --kindlegen EXEC_PATH
+                        Path to the kindlegen binary if not on sys path
+  -o OUTPUT_DIR, --output_dir OUTPUT_DIR
+                        Output path for created ebook and other files
+```
 
 ## Example
 
-    python dailykindle.py ~/Desktop/temp/ day \
-    "~/Downloads/KindleGen_Mac_i386_v1.2/kindleGen" \
+    python dailykindle.py -o ~/Desktop/temp/ -a 7 \
+    -k "~/Downloads/KindleGen_Mac_i386_v1.2/kindleGen" \
     "http://feeds.feedburner.com/b-list-entries" \
     "http://lucumr.pocoo.org/feed.atom"
 
 ## Want more?
 
 Run the script as a cron job: see `/examples/cronjob/`.
-
-## License
-
-Have fun.
