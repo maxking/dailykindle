@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
     def usage():
         print("""DailyKindle usage:
-python dailykindle.py <output dir> <day|week> <kindle_gen> <feed_url_1> [<feed_url_2> ...]""")
+python dailykindle.py <output dir> <day|week|all> <kindle_gen> <feed_url_1> [<feed_url_2> ...]""")
 
     if not len(argv) > 3:
         usage()

@@ -26,10 +26,11 @@ Want to see what it looks like? Take a look at `examples/mobi_doc/`!
 ## Usage
 
     DailyKindle usage:
-    python dailykindle.py <output dir> <day|week> <kindle_gen> <feed_url_1>
+    python dailykindle.py <output dir> <day|week|all> <kindle_gen> <feed_url_1>
     [<feed_url_2> ...]
 
-Passing `day` will only keep posts younger than one day; `week` for one week.
+Passing `day` will only keep posts younger than one day; `week` for one week;
+and `all` will keep all the posts.
 
 This will create a `daily.mobi` in `<output dir>`. You can now transfer this
 file to your device.
