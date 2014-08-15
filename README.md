@@ -6,6 +6,9 @@ device that supports MOBI documents).
 
 Want to see what it looks like? Take a look at `examples/mobi_doc/`!
 
+```
+This is a fork of the original project by pelletier with some modifications
+```
 
 ## Requirements
 
@@ -16,17 +19,15 @@ Want to see what it looks like? Take a look at `examples/mobi_doc/`!
 ## Installation
 
 1. Grab the script code. Choose one of the following:
-   * [https://bitbucket.org/pelletier/dailykindle/get/tip.zip](https://bitbucket.org/pelletier/dailykindle/get/tip.zip)
-   * [https://github.com/pelletier/dailykindle/zipball/master](https://github.com/pelletier/dailykindle/zipball/master)
-   * `hg clone https://bitbucket.org/pelletier/dailykindle`
-   * `git clone git://github.com/pelletier/dailykindle.git`
+   * https://github.com/maxking/dailykindle/zipball/master
+   * `git clone git://github.com/maxking/dailykindle.git`
 2. (optional) Source your virtualenv.
 3. `pip install -r requirements.txt`
 
 ## Usage
 
 ```
-usage: dailykindle.py [-h] [-a INT] [-k EXEC_PATH] [-o OUTPUT_DIR]
+usage: dailykindle.py [-h] [-a AGE] [-k EXEC_PATH] [-o OUTPUT_DIR]
                       [feed [feed ...]]
 
 positional arguments:
@@ -34,9 +35,9 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -a INT, --age INT     Max age of posts to be used
+  -a AGE, --age AGE     Max age of posts to be used
   -k EXEC_PATH, --kindlegen EXEC_PATH
-                        Path to the kindlegen binary if not on sys path
+                        Path to the kindlegen binary if not in sys.path
   -o OUTPUT_DIR, --output_dir OUTPUT_DIR
                         Output path for created ebook and other files
 ```

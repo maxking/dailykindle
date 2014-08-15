@@ -36,6 +36,12 @@ def build(feed_urls, output_dir, max_old=None):
     feed_number = 1
     play_order = 1
 
+    # Exit if there are no feeds to generate ebook.
+    if len(feeds[0].entries) == 0:
+        print("No entries found! Exiting ...")
+        exit()
+
+
     for feed in feeds:
         feed_number += 1
         play_order += 1
@@ -93,15 +99,20 @@ def build(feed_urls, output_dir, max_old=None):
 
 def render_and_write(template_name, context, output_name, output_dir):
     """Render `template_name` with `context` and write the result in the file
-    `output_dir`/`output_name`."""
+    `output_dir`/`output_name`.
+    """
 
     template = templates_env.get_template(template_name)
     f = open(path.join(output_dir, output_name), "w")
-    f.write(template.render(**context))
+    try:
+        f.write(template.render(**context))
+    except UnicodeEncodeError:
+        f.write(template.render(**context).encode('ascii', 'ignore'))
     f.close()
 
 def mobi(input_file, exec_path):
-    """Execute the KindleGen binary to create a MOBI file."""
+    """Execute the KindleGen binary to create a MOBI file.
+    """
     if exec_path is None:
         exec_path = "kindlegen"
     call([exec_path, input_file])
@@ -109,17 +120,14 @@ def mobi(input_file, exec_path):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-a", "--age", dest="age", default=None,
-                      help="Max age of posts to be used", metavar="INT")
+                      help="Max age of posts to be used")
     parser.add_argument("-k", "--kindlegen", dest="exec_path", default=None,
                       help="Path to the kindlegen binary if not on sys path")
     parser.add_argument("-o", "--output_dir", dest="output_dir", default="/tmp",
                         help="Output path for created ebook and other files")
     parser.add_argument("feed", nargs="*", help="One or more feed urls")
 
-    try:
-        args = parser.parse_args()
-    except:
-        raise
+    args = parser.parse_args()
 
     if args.age is None:
         length = None

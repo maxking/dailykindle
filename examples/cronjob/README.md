@@ -15,7 +15,7 @@ This example shows you how to daily build and deliver your DailyKindle.
 * Download and put somewhere the [kindlegen binary](http://www.amazon.com/gp/feature.html?docId=1000234621)
 * Tweak the script.py file according to your SMTP credentials and your
   filesystem paths.
-* Run `pip install -r requirements.pip`
+* Run `pip install -r requirements.txt`
 * Modify `sources.txt` to your taste.
 * Add something like the following line to your crontab (`crontab -e`):
 
